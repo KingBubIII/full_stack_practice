@@ -1,4 +1,7 @@
-import firebase_admin
+from requests import get
+import json
 
-default_app = firebase_admin.initialize_app(name='test')
-print(default_app.credential)
+basic_URL = "https://hacker-news.firebaseio.com/v0/"
+suffix = ".json?print=pretty"
+top_story_ids_json = get(basic_URL+"topstories"+suffix)
+top_story_ids = json.loads(top_story_ids_json.content)
