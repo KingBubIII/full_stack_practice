@@ -3,6 +3,7 @@ from json import loads
 from bs4 import BeautifulSoup
 from queue import SimpleQueue
 import classes as c
+import time
 
 def buildStoryQueue():
     basic_URL = "https://hacker-news.firebaseio.com/v0/"
@@ -16,5 +17,7 @@ def buildStoryQueue():
         current_story_data = loads(get(basic_URL+middle+suffix).content)
         story_obj = c.STORY(current_story_data["url"], current_story_data["title"], current_story_data["id"])
         story_queue.put(story_obj)
+
+    return story_queue
 
 buildStoryQueue()
