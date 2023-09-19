@@ -15,9 +15,9 @@ def buildStoryQueue():
     for story in top_story_ids:
         middle = 'item/'+str(story)
         current_story_data = loads(get(basic_URL+middle+suffix).content)
-        story_obj = c.STORY(current_story_data["url"], current_story_data["title"], current_story_data["id"])
-        story_queue.put(story_obj)
+        yield c.STORY(current_story_data["url"], current_story_data["title"], current_story_data["id"])
+        # story_queue.put(story_obj)
 
-    return story_queue
+    # return story_queue
 
 buildStoryQueue()
