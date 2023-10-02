@@ -13,6 +13,8 @@ def buildLink(newStories=False, topStories=False, bestStories=False, item=None) 
         link = basic_URL+"newstories"+suffix
     elif topStories:
         link = basic_URL+"topstories"+suffix
+    elif bestStories:
+        link = basic_URL+"beststories"+suffix
     elif not item is None:
         link = basic_URL+'item/'+str(item)+suffix
     else:
