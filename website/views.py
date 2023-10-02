@@ -13,7 +13,8 @@ def newStories():
     if new_stories_queue is None:
         new_stories_queue = buildStoryQueue(newStories=True, topStories=False, bestStories=False)
     var = next(new_stories_queue)
-    return render_template('story_view.html', story_title=var.title, story_snapshot=var.snapshot, story_link=var.link)
+
+    return render_template('story_view.html', story_title=var.title, story_snapshot=var.snapshot, story_link=var.link, refresh_link='/new')
 
 @views.route('/top')
 def topStories():
@@ -21,12 +22,16 @@ def topStories():
     if top_stories_queue is None:
         top_stories_queue = buildStoryQueue(newStories=False, topStories=True, bestStories=False)
     var = next(top_stories_queue)
-    return render_template('story_view.html', story_title=var.title, story_snapshot=var.snapshot, story_link=var.link)
 
-@views.route('/best')
+    return render_template('story_view.html', story_title=var.title, story_snapshot=var.snapshot, story_link=var.link, refresh_link='/top')
+
+"""
+@views.route('/best', methods=['GET','POST'])
 def bestStories():
     global best_stories_queue
     if best_stories_queue is None:
         best_stories_queue = buildStoryQueue(newStories=False, topStories=False, bestStories=True)
     var = next(best_stories_queue)
-    return render_template('story_view.html', story_title=var.title, story_snapshot=var.snapshot, story_link=var.link)
+
+    return render_template('story_view.html', story_title=var.title, story_snapshot=var.snapshot, story_link=var.link, refresh_link='/best')
+"""

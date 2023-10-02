@@ -27,7 +27,6 @@ def buildStoryQueue(newStories, topStories, bestStories) -> GeneratorExit:
     hacker_news_link = buildLink(newStories, topStories, bestStories)
     top_story_ids_json = get(hacker_news_link)
     top_story_ids = loads(top_story_ids_json.content)
-    story_queue = SimpleQueue()
 
     for story in top_story_ids:
         current_story_data = loads(get(buildLink(item=story)).content)
