@@ -3,7 +3,8 @@
 {% block content %}
 <b>{{story_title}}</b>
 <p>{{story_snapshot}}</p>
-<a href={{story_link}}>story_link</a> 
-<button> <a href="{{refresh_link}}">Click me</a> </button>
+<a href={{story_link}}>story_link</a>
+<button> <a href="/{{save_link}}?feed={{refresh_link}}">Save</a> </button>
+<button> <a href="/{{refresh_link}}">Skip</a> </button>
 {% endblock %}
 
