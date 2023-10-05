@@ -42,3 +42,51 @@ def saveStory():
     feed = request.args.get('feed', type = str)
     print(feed)
     return redirect("/{0}".format(feed))
+
+@views.route('/login', methods=['GET', 'POST'])
+def logIn():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+
+        if email == 'guest@gmail' and password=='asdf':
+            successful = True
+        else:
+            successful = False
+        # error check
+        # check database for login match
+        if successful:
+            return redirect('/new')
+        else:
+            return redirect('/login')
+    else:
+        return render_template('login.html')
+    
+@views.route('/signup', methods=['GET', 'POST'])
+def signUp():
+    if request.method == 'POST':
+        name = request.form['firstName']
+        email = request.form['email']
+        pass1 = request.form['password1']
+        pass2 = request.form['password2']
+
+        # input checks
+        if pass1 == pass2:
+            successful = True
+        else:
+            successful = False
+        # error check
+        # check database for login match
+        if successful:
+            return redirect('/new')
+        else:
+            return redirect('/signup?email={0}&name={1}'.format(email, name))
+    else:
+        if len(request.args.keys()) == 0:
+            email = ''
+            name = ''
+        else:
+            email = request.args.get('email', type = str)
+            name = request.args.get('name', type = str)
+
+        return render_template('sign_up.html', email=email, name=name)
