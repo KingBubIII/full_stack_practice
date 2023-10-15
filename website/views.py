@@ -8,6 +8,11 @@ top_stories_queue = None
 best_stories_queue = None
 current_story = None
 
+@views.route('/home')
+@views.route('/')
+def home():
+    return render_template('home.html', sign_up_link='/signup', sign_in_link='/login', guest_access='/new')
+
 @views.route('/new')
 def newStories():
     global new_stories_queue
