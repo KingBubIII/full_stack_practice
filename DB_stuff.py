@@ -1,23 +1,30 @@
 import pymysql
 from datetime import date
+import classes
 
 login_details = open('sql_login.txt','r').readlines()
 _db_conn = pymysql.connect(user=login_details[0].strip(), password=login_details[1].strip(), host=login_details[2].strip(), db=login_details[3].strip())
 _cursor = _db_conn.cursor()
 
-def verifyLogIn(email, password):
+def login(identifier):
+    user_data = list()
     # queries for an account with matching credentials from the form
-    result = _cursor.execute("""SELECT * FROM user_info WHERE email=%s AND password=%s""",(email, password))
+    if type(identifier) is tuple:
+        query = _cursor.execute("""SELECT * FROM user_info WHERE email=%s AND password=%s""",(identifier[0], identifier[1]))
+    elif type(identifier) is str:
+        query = _cursor.execute("""SELECT * FROM user_info WHERE personID=%s""",(identifier))
+
     # checks validity of return
-    if result == 1:
+    if query == 1:
         successful = True
-    elif result > 1:
+        result = _cursor.fetchone()
+    elif query > 1:
         print('Error: Too many account matches')
         successful = False
     else:
         successful = False
 
-    return successful
+    return successful, result
 
 def signUp(form):
     any_blank = False in [bool(x) for x in form]
@@ -29,3 +36,6 @@ def signUp(form):
             _db_conn.commit()
     
     return result
+
+def loadUser(id:str):
+    return classes.USER(id)

@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from requests import get
+import DB_stuff as DB
 
 class STORY():
     def __init__(self, link, title, hacker_news_id) -> None:
@@ -26,3 +27,23 @@ class STORY():
 
         return snapshot_temp + '...'
 
+class USER():
+    def __init__(self, identifier) -> None:
+        self.successful, user_data = DB.login(identifier)
+        self.id, self.first_name, self.email, self.password, self.join_date = user_data
+
+    def to_json(self):        
+        return {"name": self.name,
+                "email": self.email}
+
+    def is_authenticated(self):
+        return self.successful
+
+    def is_active(self):   
+        return True
+
+    def is_anonymous(self):
+        return False          
+
+    def get_id(self):         
+        return str(self.id)

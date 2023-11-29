@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, session, request, redirect
 from get_data import buildStoryQueue
 # using 'as' statement because I'll rename the database functions file later
 import DB_stuff as DB
+from flask_login import login_user, login_required
+from classes import USER
 
 views = Blueprint('views', __name__)
 new_stories_queue = None
@@ -24,6 +26,7 @@ def newStories():
     return render_template('story_view.html', story_title=current_story.title, story_snapshot=current_story.snapshot, story_link=current_story.link, refresh_link='new', save_link='like-story')
 
 @views.route('/top')
+@login_required
 def topStories():
     global top_stories_queue
     if top_stories_queue is None:
@@ -54,9 +57,10 @@ def saveStory():
 async def logIn():
     # if the form is submitted via button
     if request.method == 'POST':
-        successful = DB.verifyLogIn(request.form['email'], request.form['password'])
+        current_user = USER( (request.form['email'], request.form['password']) )
 
-        if successful:
+        if current_user.successful:
+            login_user(current_user)
             # default to new story queue
             return redirect('/new')
         else:
