@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, session, request, redirect
+from flask import Blueprint, render_template, session, request, redirect, current_app
 from get_data import buildStoryQueue
 # using 'as' statement because I'll rename the database functions file later
 import DB_stuff as DB
-from flask_login import login_user, login_required
+import flask_login
 from classes import USER
 
 views = Blueprint('views', __name__)
@@ -14,7 +14,10 @@ current_story = None
 @views.route('/home')
 @views.route('/')
 def home():
-    return render_template('home.html', sign_up_link='/signup', sign_in_link='/login', guest_access='/new')
+    return render_template('home.html', base_file=current_app.config['base_template'],
+                                        sign_up_link='/signup', 
+                                        sign_in_link='/login', 
+                                        guest_access='/new')
 
 @views.route('/new')
 def newStories():
@@ -23,17 +26,27 @@ def newStories():
         new_stories_queue = buildStoryQueue(newStories=True, topStories=False, bestStories=False)
     current_story = next(new_stories_queue)
 
-    return render_template('story_view.html', story_title=current_story.title, story_snapshot=current_story.snapshot, story_link=current_story.link, refresh_link='new', save_link='like-story')
+    return render_template('story_view.html', base_file=current_app.config['base_template'],
+                                            story_title=current_story.title,
+                                            story_snapshot=current_story.snapshot,
+                                            story_link=current_story.link, 
+                                            refresh_link='new',
+                                            save_link='like-story')
 
 @views.route('/top')
-@login_required
+@flask_login.login_required
 def topStories():
     global top_stories_queue
     if top_stories_queue is None:
         top_stories_queue = buildStoryQueue(newStories=False, topStories=True, bestStories=False)
     current_story = next(top_stories_queue)
 
-    return render_template('story_view.html', story_title=current_story.title, story_snapshot=current_story.snapshot, story_link=current_story.link, refresh_link='top', save_link='like-story')
+    return render_template('story_view.html', base_file=current_app.config['base_template'],
+                                            story_title=current_story.title,
+                                            story_snapshot=current_story.snapshot,
+                                            story_link=current_story.link,
+                                            refresh_link='top',
+                                            save_link='like-story')
 
 """
 @views.route('/best', methods=['GET','POST'])
@@ -60,7 +73,8 @@ async def logIn():
         current_user = USER( (request.form['email'], request.form['password']) )
 
         if current_user.successful:
-            login_user(current_user)
+            flask_login.login_user(current_user)
+            current_app.config['base_template'] = "signed_in_base.html"
             # default to new story queue
             return redirect('/new')
         else:
@@ -73,7 +87,8 @@ async def logIn():
         else:
             email = request.args.get('email', type = str)
 
-        return render_template('login.html', email=email)
+        return render_template('login.html', base_file=current_app.config['base_template'],
+                                            email=email)
 
 # handles log in form html and log in verification
 @views.route('/signup', methods=['GET', 'POST'])
@@ -94,4 +109,6 @@ def signUp():
             email = request.args.get('email', type = str)
             name = request.args.get('name', type = str)
 
-        return render_template('sign_up.html', email=email, name=name)
+        return render_template('sign_up.html', base_file=current_app.config['base_template'],
+                                                email=email, 
+                                                name=name)

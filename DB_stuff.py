@@ -23,6 +23,7 @@ def login(identifier):
         successful = False
     else:
         successful = False
+        result = None
 
     return successful, result
 
