@@ -2,7 +2,6 @@ from website import create_app
 from flask_login import LoginManager
 import DB_stuff as DB
 
-
 if __name__ == '__main__':
     app = create_app()
     app.secret_key = 'asdf'
