@@ -27,8 +27,17 @@ def buildStoryQueue(newStories, topStories, bestStories) -> GeneratorExit:
     hacker_news_link = buildLink(newStories, topStories, bestStories)
     top_story_ids_json = get(hacker_news_link)
     top_story_ids = loads(top_story_ids_json.content)
+    story_queue = None
 
     for story in top_story_ids:
+        
         current_story_data = loads(get(buildLink(item=story)).content)
-        yield c.STORY(current_story_data["url"], current_story_data["title"], current_story_data["id"])
-        # story_queue.put(story_obj)
+        # implimenting because some json files do not have nessessary keys like "url", "title", or "id"
+        try:
+            story_queue = c.STORY(current_story_data["url"], current_story_data["title"], current_story_data["id"])
+            if len(story_queue.snapshot) < 5:
+                continue
+        except Exception as e:
+            continue
+        
+        yield story_queue
