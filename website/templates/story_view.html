@@ -5,12 +5,13 @@
     <b>{{story_title}}</b>
 </div>
 <div class="row fs-6 p-2 justify-content-center">
-    <a class="btn col-3 btn-outline-secondary"href={{story_link}} target="_blank">story_link</a>
-    <a class="btn col-3 btn-outline-secondary" href="/{{save_link}}?feed={{refresh_link}}">Save</a>
+    <a class="btn col-3 btn-outline-secondary" href={{story_link}} target="_blank">story_link</a>
+    <a id="save_btn" class="btn col-3 btn-outline-secondary" hx-post="/{{save_link}}">Save</a>
     <a class="btn col-3 btn-outline-secondary" href="/{{refresh_link}}">Skip</a>
 </div>
 <div class="row fs-5 border p-2">
     <p>{{story_snapshot}}</p>
 </div>
+<div id="Save-button-update" hx-get="/{{save_link}}" hx-trigger="every 2s" hx-target="#save_btn"></div>
 {% endblock %}
 

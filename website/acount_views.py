@@ -7,11 +7,30 @@ from classes import USER
 
 account_blueprint = Blueprint("acc", __name__)
 
-@account_blueprint.route('/like-story')
+@account_blueprint.route('/save_story', methods=['GET', 'POST'])
+@flask_login.login_required
 def saveStory():
-    feed = request.args.get('feed', type = str)
-    print(feed)
-    return redirect("/{0}".format(feed))
+    user_id = flask_login.current_user.id
+    story_id = request.args.get('id', type = str)
+    
+    if request.method == 'GET':
+        saved_status = DB.checkStorySavedStatus(user_id, story_id)
+
+        if saved_status:
+            return "Saved"
+        else:
+            return "Save"
+        
+    elif request.method == 'POST':
+        saved_status = DB.saveStory(user_id, story_id)
+        
+        match saved_status:
+            case -1:
+                return "Already saved"
+            case 1:
+                return "Saved successfully"
+            case 0:
+                return "Not saved successfully"
 
 # handles log in form html and log in verification
 @account_blueprint.route('/login', methods=['GET', 'POST'])

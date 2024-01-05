@@ -32,7 +32,7 @@ def signUp(form):
     result = 0
     # checks for matching passwords
     if any_blank is False and form['password1'] == form['password2']:
-        result = _cursor.execute("""INSERT INTO user_info (firstName, email, password, join_date) VALUES (%s, %s, %s, %s)""", ( form['firstName'], form['email'], form['password1'], date.today() ) )
+        result = _cursor.execute( """INSERT INTO user_info (firstName, email, password, join_date) VALUES (%s, %s, %s, %s)""", ( form['firstName'], form['email'], form['password1'], date.today() ) )
         if result:
             _db_conn.commit()
     
@@ -40,3 +40,19 @@ def signUp(form):
 
 def loadUser(id:str):
     return classes.USER(id)
+
+def checkStorySavedStatus(user_id, story_id):
+    _cursor.execute( """SELECT count(*) FROM saved_stories WHERE person_record_id = %s AND hacker_news_id = %s;""", (user_id, story_id) )
+    copy_exists = _cursor.fetchone()[0]
+    return copy_exists
+
+def saveStory(user_id, story_id):
+    if bool(checkStorySavedStatus(user_id, story_id)):
+        return -1
+    
+    result = _cursor.execute( """INSERT INTO saved_stories (person_record_id, hacker_news_id) VALUES (%s, %s);""", (user_id, story_id) )
+    if result:
+        _db_conn.commit()
+        return 1
+    else:
+        return 0

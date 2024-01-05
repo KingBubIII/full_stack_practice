@@ -30,20 +30,20 @@ class STORY():
 class USER():
     def __init__(self, identifier) -> None:
         self.successful, user_data = DB.login(identifier)
-        self.id, self.first_name, self.email, self.password, self.join_date = user_data
+        self.id, self.first_name, self._email, self._password, self._join_date = user_data
 
-    def to_json(self):        
+    def to_json(self):
         return {"name": self.name,
                 "email": self.email}
 
     def is_authenticated(self):
         return self.successful
 
-    def is_active(self):   
+    def is_active(self):
         return True
 
     def is_anonymous(self):
-        return False          
+        return False
 
     def get_id(self):
         return str(self.id)
