@@ -8,7 +8,7 @@ from classes import USER
 account_blueprint = Blueprint("acc", __name__)
 
 @account_blueprint.route('/save_story', methods=['GET', 'POST'])
-@flask_login.login_required
+@flask_login.fresh_login_required
 def saveStory():
     user_id = flask_login.current_user.id
     story_id = request.args.get('id', type = str)

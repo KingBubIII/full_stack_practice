@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from .navigation_views import nav_blueprint
 from .acount_views import account_blueprint
 from .story_views import story_views
@@ -11,5 +11,11 @@ def create_app():
     app.register_blueprint(nav_blueprint)
     app.register_blueprint(account_blueprint)
     app.register_blueprint(story_views)
+
+    @app.before_first_request
+    def initialize():
+        # This function will be executed once before the first request
+        session.clear()
+        print("Initialized the application")
 
     return app
