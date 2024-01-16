@@ -7,7 +7,6 @@ _db_conn = pymysql.connect(user=login_details[0].strip(), password=login_details
 _cursor = _db_conn.cursor()
 
 def login(identifier):
-    user_data = list()
     # queries for an account with matching credentials from the form
     if type(identifier) is tuple:
         query = _cursor.execute("""SELECT * FROM user_info WHERE email=%s AND password=%s""",(identifier[0], identifier[1]))
@@ -41,13 +40,13 @@ def signUp(form):
 def loadUser(id:str):
     return classes.USER(id)
 
-def checkStorySavedStatus(user_id, story_id):
+def storySavedStatus(user_id, story_id):
     _cursor.execute( """SELECT count(*) FROM saved_stories WHERE person_record_id = %s AND hacker_news_id = %s;""", (user_id, story_id) )
     copy_exists = _cursor.fetchone()[0]
     return copy_exists
 
 def saveStory(user_id, story_id):
-    if bool(checkStorySavedStatus(user_id, story_id)):
+    if bool(storySavedStatus(user_id, story_id)):
         return -1
     
     result = _cursor.execute( """INSERT INTO saved_stories (person_record_id, hacker_news_id) VALUES (%s, %s);""", (user_id, story_id) )

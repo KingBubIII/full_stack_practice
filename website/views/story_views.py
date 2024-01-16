@@ -21,8 +21,9 @@ def newStories():
                             story_snapshot=current_story.snapshot,
                             story_link=current_story.link, 
                             refresh_link='new',
-                            save_link='save_story?id={0}'.format( str(current_story.hacker_news_id) )
-                        )
+                            save_link='save_story?id={0}'.format( str(current_story.hacker_news_id) ),
+                            anonymous= flask_login.current_user.is_anonymous
+                            )
 
 @story_views.route('/top')
 @flask_login.login_required

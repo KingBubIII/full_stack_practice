@@ -32,18 +32,14 @@ class USER():
         self.successful, user_data = DB.login(identifier)
         self.id, self.first_name, self._email, self._password, self._join_date = user_data
 
+        self.is_anonymous = False
+        self.is_active = True
+        self.is_authenticated = self.successful
+
+
     def to_json(self):
         return {"name": self.name,
                 "email": self.email}
-
-    def is_authenticated(self):
-        return self.successful
-
-    def is_active(self):
-        return True
-
-    def is_anonymous(self):
-        return False
 
     def get_id(self):
         return str(self.id)

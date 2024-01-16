@@ -14,7 +14,7 @@ def saveStory():
     story_id = request.args.get('id', type = str)
     
     if request.method == 'GET':
-        saved_status = DB.checkStorySavedStatus(user_id, story_id)
+        saved_status = DB.storySavedStatus(user_id, story_id)
 
         if saved_status:
             return "Saved"

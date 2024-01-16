@@ -1,7 +1,7 @@
 from flask import Flask, session
-from .navigation_views import nav_blueprint
-from .acount_views import account_blueprint
-from .story_views import story_views
+from .views.navigation_views import nav_blueprint
+from .views.acount_views import account_blueprint
+from .views.story_views import story_views
 
 def create_app():
     app = Flask(__name__)
