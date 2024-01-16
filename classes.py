@@ -30,6 +30,8 @@ class STORY():
 class USER():
     def __init__(self, identifier) -> None:
         self.successful, user_data = DB.login(identifier)
+        if not self.successful:
+            return
         self.id, self.first_name, self._email, self._password, self._join_date = user_data
 
         self.is_anonymous = False
