@@ -5,7 +5,11 @@ nav_blueprint = Blueprint('nav',__name__)
 @nav_blueprint.route("/")
 @nav_blueprint.route("/home")
 def home():
-    return render_template('home.html', base_file=current_app.config['base_template'],
-                                        sign_up_link='/signup', 
-                                        sign_in_link='/login', 
-                                        guest_access='/new')
+    html_file_variables = {}
+
+    html_file_variables["base_file"]=current_app.config['base_template']
+    html_file_variables["sign_up_link"]='/signup'
+    html_file_variables["sign_in_link"]='/login'
+    html_file_variables["guest_access"]='/new'
+
+    return render_template('home.html', **html_file_variables)

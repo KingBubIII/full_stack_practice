@@ -35,6 +35,8 @@ def saveStory():
 # handles log in form html and log in verification
 @account_blueprint.route('/login', methods=['GET', 'POST'])
 async def logIn():
+    html_file_variables = {}
+    
     # if the form is submitted via button
     if request.method == 'POST':
         current_user = USER( (request.form['email'], request.form['password']) )
@@ -54,12 +56,16 @@ async def logIn():
         else:
             email = request.args.get('email', type = str)
 
-        return render_template('login.html', base_file=current_app.config['base_template'],
-                                            email=email)
+        html_file_variables["base_file"]=current_app.config['base_template']
+        html_file_variables["email"]=email
+
+        return render_template('login.html', **html_file_variables)
 
 # handles log in form html and log in verification
 @account_blueprint.route('/signup', methods=['GET', 'POST'])
 def signUp():
+    html_file_variables = {}
+
     if request.method == 'POST':
         result = DB.signUp(request.form)
         if result:
@@ -76,6 +82,8 @@ def signUp():
             email = request.args.get('email', type = str)
             name = request.args.get('name', type = str)
 
-        return render_template('sign_up.html', base_file=current_app.config['base_template'],
-                                                email=email, 
-                                                name=name)
+        html_file_variables["base_file"] = current_app.config['base_template']
+        html_file_variables["email"] = email
+        html_file_variables["name"] = name
+
+        return render_template('sign_up.html', **html_file_variables)
