@@ -55,3 +55,9 @@ def saveStory(user_id, story_id):
         return 1
     else:
         return 0
+    
+def getAllSavedStoryIDs(user_id):
+    _cursor.execute("""SELECT hacker_news_id FROM saved_stories WHERE person_record_id = %s;""", (user_id) )
+    
+    story_ids = [ result[0] for result in _cursor.fetchall() ]
+    return story_ids

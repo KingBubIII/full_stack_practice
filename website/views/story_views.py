@@ -12,7 +12,7 @@ current_story = None
 def newStories():
     global new_stories_queue
     if new_stories_queue is None:
-        new_stories_queue = buildStoryQueue(newStories=True, topStories=False, bestStories=False)
+        new_stories_queue = buildStoryQueue("newstories")
     current_story = next(new_stories_queue)
 
     html_file_variables = {}
@@ -32,7 +32,7 @@ def newStories():
 def topStories():
     global top_stories_queue
     if top_stories_queue is None:
-        top_stories_queue = buildStoryQueue(newStories=False, topStories=True, bestStories=False)
+        top_stories_queue = buildStoryQueue("topstories")
     current_story = next(top_stories_queue)
 
     html_file_variables = {}
