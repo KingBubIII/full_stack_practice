@@ -1,0 +1,17 @@
+{% extends base_file %}
+
+{% block content %}
+    {% for story in stories %}
+        <div class="card text-bg-secondary">
+            <div class="card-body">
+                <h3 class="card-title"><b>{{ story.title }}</b></h3>
+                <p class="card-text">{{ story.snapshot }}</p>
+                <a href="{{ story.link }}" class="btn btn-primary">Link</a>
+            </div>
+            <div class="card-footer text-body-secondary">
+                
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+{% endblock %}

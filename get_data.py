@@ -22,13 +22,13 @@ def buildStoryQueue(story_type) -> GeneratorExit:
     hacker_news_link = buildLink(story_type)
     top_story_ids_json = get(hacker_news_link)
     top_story_ids = loads(top_story_ids_json.content)
-    story_queue = None
+    story_class = None
 
     for story in top_story_ids:
         # implimenting because some json files do not have nessessary keys like "url", "title", or "id"
         try:
             story_class = getStoryItem(story)
-            if len(story_queue.snapshot) < 5:
+            if len(story_class.snapshot) < 5:
                 continue
         except Exception as e:
             continue
