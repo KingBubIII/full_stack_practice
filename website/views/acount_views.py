@@ -92,8 +92,13 @@ def signUp():
 @account_blueprint.route('/account', methods=['GET', 'POST'])
 @flask_login.fresh_login_required
 def account():
+    html_file_variables = {}
+    html_file_variables["base_file"] = current_app.config['base_template']
+    html_file_variables["extend"] = request.args.get('extend', default=False, type=bool)
+    html_file_variables["more_count"] = request.args.get('more_count', default=0, type=int)
+    
     record_count = 5
-    story_ids = DB.getAllSavedStoryIDs(current_user.id, 5)
+    story_ids = DB.getAllSavedStoryIDs(current_user.id, 5, html_file_variables["more_count"])
     story_objs = []
     # story_objs = [getStoryItem(story_id) for story_id in story_ids]
     for story_id in story_ids:
@@ -105,9 +110,7 @@ def account():
         except Exception as e:
             print(e)
             continue
-    
-    html_file_variables = {}
-    html_file_variables["base_file"] = current_app.config['base_template']
+
     html_file_variables["stories"] = story_objs
 
     return render_template('account.html', **html_file_variables)

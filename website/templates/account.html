@@ -1,4 +1,6 @@
+{% if extend %}
 {% extends base_file %}
+{% endif %}
 
 {% block content %}
     {% for story in stories %}
@@ -9,9 +11,12 @@
                 <a href="{{ story.link }}" class="btn btn-primary">Link</a>
             </div>
             <div class="card-footer text-body-secondary">
-                
+                {{story.hacker_news_id}}
             </div>
         </div>
         <br>
     {% endfor %}
+    <div id="load_more_{{more_count}}">
+        <a class="btn btn-outline-secondary" hx-get="/account?more_count={{more_count+1}}" hx-target="#load_more_{{more_count}}" >Load More</a>
+    </div>
 {% endblock %}
