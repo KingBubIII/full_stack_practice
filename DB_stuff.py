@@ -49,15 +49,15 @@ def saveStory(user_id, story_id):
     if bool(storySavedStatus(user_id, story_id)):
         return -1
     
-    result = _cursor.execute( """INSERT INTO saved_stories (person_record_id, hacker_news_id) VALUES (%s, %s);""", (user_id, story_id) )
+    result = _cursor.execute( """INSERT INTO saved_stories (person_record_id, hacker_news_id, date_saved) VALUES (%s, %s, %s);""", (user_id, story_id, date.today()) )
     if result:
         _db_conn.commit()
         return 1
     else:
         return 0
     
-def getAllSavedStoryIDs(user_id, count, offset_count):
-    _cursor.execute("""SELECT hacker_news_id FROM saved_stories WHERE person_record_id = %s LIMIT %s OFFSET %s;""", (user_id, count, offset_count*count) )
+def getAllSavedStoriesInfo(user_id, count, offset_count):
+    _cursor.execute("""SELECT hacker_news_id, date_saved FROM saved_stories WHERE person_record_id = %s ORDER BY date_saved DESC LIMIT %s OFFSET %s;""", (user_id, count, offset_count*count) )
     
-    story_ids = [ result[0] for result in _cursor.fetchall() ]
-    return story_ids
+    story_info = _cursor.fetchall()
+    return story_info

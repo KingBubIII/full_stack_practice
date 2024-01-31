@@ -3,7 +3,7 @@ from flask_login import current_user
 # using 'as' statement because I'll rename the database functions file later
 import DB_stuff as DB
 import flask_login
-from classes import USER, STORY
+from classes import USER
 from get_data import getStoryItem
 
 account_blueprint = Blueprint("acc", __name__)
@@ -98,18 +98,14 @@ def account():
     html_file_variables["more_count"] = request.args.get('more_count', default=0, type=int)
     
     record_count = 5
-    story_ids = DB.getAllSavedStoryIDs(current_user.id, 5, html_file_variables["more_count"])
+    stories = DB.getAllSavedStoriesInfo(current_user.id, 5, html_file_variables["more_count"])
     story_objs = []
     # story_objs = [getStoryItem(story_id) for story_id in story_ids]
-    for story_id in story_ids:
-        try:
-            story_class = getStoryItem(story_id)
-            if len(story_class.snapshot) < 5:
-                continue
-            story_objs.append(story_class)
-        except Exception as e:
-            print(e)
+    for story in stories:
+        story_class = getStoryItem(*story)
+        if len(story_class.snapshot) < 5:
             continue
+        story_objs.append(story_class)
 
     html_file_variables["stories"] = story_objs
 

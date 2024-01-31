@@ -13,24 +13,25 @@ def buildLink(item:str) -> str:
     
     return link
 
-def getStoryItem(story_id):
+def getStoryItem(story_id, date_saved=None):
     story_data = loads(get(buildLink(story_id)).content)
-    story_class = c.STORY(story_data["url"], story_data["title"], story_data["id"])
+    try:
+        story_class = c.STORY(error=False, link=story_data["url"], title=story_data["title"], hacker_news_id=story_data["id"], date_saved=date_saved)
+    except Exception as e:
+        print(e)
+        story_class = c.STORY(error=True, hacker_news_id=story_id)
     return story_class
 
 def buildStoryQueue(story_type) -> GeneratorExit:
     hacker_news_link = buildLink(story_type)
     top_story_ids_json = get(hacker_news_link)
-    top_story_ids = loads(top_story_ids_json.content)
+    story_ids = loads(top_story_ids_json.content)
     story_class = None
 
-    for story in top_story_ids:
+    for story_id in story_ids:
         # implimenting because some json files do not have nessessary keys like "url", "title", or "id"
-        try:
-            story_class = getStoryItem(story)
-            if len(story_class.snapshot) < 5:
-                continue
-        except Exception as e:
+        story_class = getStoryItem(story_id)
+        if len(story_class.snapshot) < 5 or story_class._error:
             continue
         
         yield story_class

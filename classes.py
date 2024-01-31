@@ -3,12 +3,21 @@ from requests import get
 import DB_stuff as DB
 
 class STORY():
-    def __init__(self, link, title, hacker_news_id) -> None:
+    def __init__(self, error:bool, hacker_news_id:int, link:str=None, title:str=None, date_saved=None) -> None:
+        self._error = error
         self.hacker_news_id = hacker_news_id
-        self.link = link
-        self.title = title
         self._snapshot_len = 500
-        self.snapshot = self.getStorySnapshot()
+
+        if not error:
+            self.link = link
+            self.title = title
+            self.date_saved = date_saved
+            self.snapshot = self.getStorySnapshot()
+        else:
+            self.link = "Error"
+            self.title = "Error"
+            self.date_saved = date_saved
+            self.snapshot = "Could not find story snapshot"
 
     def getStorySnapshot(self):
         snapshot_temp = ''
