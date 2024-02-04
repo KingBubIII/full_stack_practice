@@ -6,7 +6,7 @@
 </div>
 <div class="row fs-6 p-2 justify-content-center">
     <a class="btn col-3 btn-outline-secondary" href={{story_link}} target="_blank">story_link</a>
-    <a class="btn col-3 btn-outline-secondary" href="/{{refresh_link}}">Skip</a>
+    <a class="btn col-3 btn-outline-secondary" href="/skip?feed={{refresh_feed}}">Skip</a>
     {% if anonymous  %}
         <a id="save_btn" class="btn col-3 btn-outline-secondary" href="/{{save_link}}">Save</a>
     {% else %}
