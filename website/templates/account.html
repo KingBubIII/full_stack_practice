@@ -4,20 +4,17 @@
 
 {% block content %}
     {% for story in stories %}
-        <div class="card text-bg-secondary">
+        <div id="{{story.hacker_news_id}}" class="card text-bg-secondary">
             <!--
             <div class="card-header text-body-secondary">
                 {{story.hacker_news_id}}
             </div>
             -->
             <div class="card-body">
-                <h3 class="card-title"><b>{{ story.title }}</b></h3>
-                <p class="card-text">{{ story.snapshot }}</p>
-                {% if story._error %}
-                    <a href="{{ story.link }}" class="btn btn-primary disabled" >Link</a>
-                {% else %}
-                    <a href="{{ story.link }}" class="btn btn-primary">Link</a>
-                {% endif %}
+            <h3 class="card-title"><b>{{ story.title }}</b></h3>
+            <p class="card-text">{{ story.snapshot }}</p>
+                <a href="{{ story.link }}" class="btn btn-primary {% if story._error %}disabled{% endif %}">Link</a>
+                <a hx-post="/remove_story?id={{story.hacker_news_id}}" class="btn btn-secondary">Remove</a>
             </div>
             <div class="card-footer text-body-secondary">
                 Saved on: {{story.date_saved}}

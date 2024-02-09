@@ -20,7 +20,6 @@ def newStories():
         new_current_story = next(new_stories_queue)
 
     html_file_variables = {}
-    print(type(current_app.config))
     html_file_variables["base_file"] = current_app.config['base_template']
     html_file_variables["story_title"] = new_current_story.title
     html_file_variables["story_snapshot"] = new_current_story.snapshot

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, current_app
+from flask import Blueprint, render_template, request, redirect, current_app, url_for
 from flask_login import current_user
 # using 'as' statement because I'll rename the database functions file later
 import DB_stuff as DB
@@ -32,6 +32,20 @@ def saveStory():
                 return "Saved successfully"
             case 0:
                 return "Not saved successfully"
+            
+@account_blueprint.route('/remove_story', methods=['GET', 'POST'])
+@flask_login.fresh_login_required
+def removeStory():
+    user_id = flask_login.current_user.id
+    story_id = request.args.get('id', type = str)
+
+    removed_status = DB.removeStory(user_id, story_id)
+        
+    if removed_status == 1:
+        return "Removed"
+    else:
+        return "Error"
+
 
 # handles log in form html and log in verification
 @account_blueprint.route('/login', methods=['GET', 'POST'])

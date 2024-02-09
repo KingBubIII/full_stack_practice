@@ -61,3 +61,18 @@ def getAllSavedStoriesInfo(user_id, count, offset_count):
     
     story_info = _cursor.fetchall()
     return story_info
+
+def removeStory(user_id, story_id):
+    # check that story exists 
+    if not bool(storySavedStatus(user_id, story_id)):
+        return -1
+    
+    result = _cursor.execute( """DELETE FROM saved_stories WHERE person_record_id = %s AND hacker_news_id = %s;""", (user_id, story_id) )
+    # commit changes only if 1 row was changed 
+    if result == 1:
+        _db_conn.commit()
+        return result
+    # if no changes are detected do not commit changes
+    else:
+        _db_conn.rollback()
+        return 0
