@@ -57,7 +57,7 @@ def saveStory(user_id, story_id):
         return 0
     
 def getAllSavedStoriesInfo(user_id, count, offset_count):
-    _cursor.execute("""SELECT hacker_news_id, date_saved FROM saved_stories WHERE person_record_id = %s ORDER BY date_saved DESC LIMIT %s OFFSET %s;""", (user_id, count, offset_count*count) )
+    _cursor.execute("""SELECT hacker_news_id, date_saved FROM saved_stories WHERE person_record_id = %s ORDER BY date_saved DESC, hacker_news_id DESC LIMIT %s OFFSET %s;""", (user_id, count, offset_count*count) )
     
     story_info = _cursor.fetchall()
     return story_info

@@ -22,7 +22,5 @@
         </div>
         <br>
     {% endfor %}
-    <div id="load_more_{{more_count}}">
-        <a class="btn btn-outline-secondary" hx-get="/account?more_count={{more_count+1}}" hx-target="#load_more_{{more_count}}" >Load More</a>
-    </div>
+    <a id="load_more" class="btn btn-outline-secondary" hx-get="/account?more_count={{more_count+1}}" hx-swap="outerHTML show:top">Load More</a>
 {% endblock %}
